@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 // Import your global CSS file
 import "../global.css";
 
-import React, { useEffect } from "react";
-import { useAuth } from "../context/authContext";
+import React, { useEffect, useContext } from "react";
+import { AuthContextProvider, useAuth } from "../context/authContext";
 
 const MainLayout = () => {
   const { isAuthenticated } = useAuth();
@@ -16,7 +16,7 @@ const MainLayout = () => {
     //check if user is authenticated or not
     if (typeof isAuthenticated == "undefined") return;
     const inApp = segments[0] == "(app)";
-    if (isAuthenticated && inApp) {
+    if (isAuthenticated && !inApp) {
       // redirect to home
       router.replace("home");
     } else if (isAuthenticated == false) {
@@ -24,16 +24,16 @@ const MainLayout = () => {
       router.replace("signIn");
     }
   }, [isAuthenticated]);
+  // Ensure Slot or a navigator is rendered
+  return <Slot />;
 };
 
-const _layout = () => {
+export default function RooLayout() {
   return (
-    <View className="flex-1">
-      <Slot />
-    </View>
+    <AuthContextProvider>
+      <MainLayout />
+    </AuthContextProvider>
   );
-};
-
-export default _layout;
+}
 
 const styles = StyleSheet.create({});

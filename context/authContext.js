@@ -1,16 +1,16 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 
 export const AuthContext = createContext();
 
-export const AuthConstProvider = ({ children }) => {
+export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(undefined);
 
   useEffect(() => {
     // onAuthStateChanged
-    setTimeout(() => {
-      setIsAuthenticated(true);
-    }, 1000);
+    // setTimeout(() => {
+    // }, 2000);
+    setIsAuthenticated(false);
   }, []);
 
   const login = async (email, password) => {
@@ -30,7 +30,7 @@ export const AuthConstProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={(user, isAuthenticated, login, logout, register)}
+      value={{ user, isAuthenticated, login, logout, register }}
     >
       {children}
     </AuthContext.Provider>
